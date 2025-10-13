@@ -1,4 +1,5 @@
 const userModel=require("../models/user");
+const partnerModel=require("../models/foodPartner");
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 
@@ -25,7 +26,7 @@ async function registerUser(req,res) {
     },process.env.JWT_SEC)
     res.cookie("token",token);
 
-    res.status(401).json({
+    res.status(201).json({
         message:"User registered successfully",
         user:{
         id:user._id,
@@ -73,4 +74,74 @@ async function logoutUser(req,res) {
     })
     
 }
-module.exports={registerUser,loginUser,logoutUser};
+
+
+async function  partnerRegister(req,res) {
+    const {name,email,password}=req.body;
+    const userExist=await partnerModel.findOne({email});
+
+    if(userExist){
+        return res.status(400).json({
+            message:"User already exists!"
+        })
+    }
+    const hashedPassword=await bcrypt.hash(password,10);
+    const newPartner=await partnerModel.create({
+        name,
+        email,
+        password:hashedPassword
+    });
+
+    const token=jwt.sign({
+       id:newPartner._id,
+    },process.env.JWT_SEC);
+    res.cookie("token",token);
+
+    res.status(201).json({
+        message:"Partner register successfully",
+        newPartner:{
+            id:newPartner._id,
+            name:newPartner.name,
+            email:newPartner.email,
+        }
+    })
+    
+}
+
+async function partnerLogin(req,res) {
+    const {email,password}=req.body;
+    const partner=await partnerModel.findOne({email});
+    if(!partner){
+            res.status(400).json({
+                message:"Invalid email or password"
+            })
+    }
+    const checkPassword=await bcrypt.compare(password,partner.password);
+    if(!checkPassword){
+        res.status(400).json({
+            message:"Invalid email or password"
+        })
+    }
+    const token=jwt.sign({
+        id:partner._id
+    },process.env.JWT_SEC);
+    res.cookie("token",token);
+    res.status(201).json({
+        message:"Partner logged successfully",
+        partner:{
+            id:partner._id,
+            email:partner.email,
+            name:partner.name
+        }
+    })
+    
+}
+
+function partnerLogout(req,res){
+    res.clearCookie("token");
+    res.status(200).json({
+        message:"Partner logout successfully"
+    })
+}
+
+module.exports={registerUser,loginUser,logoutUser,partnerRegister,partnerLogin,partnerLogout};
