@@ -16,4 +16,13 @@ async function createFood(req,res) {
      })
 
 }
-module.exports={createFood};
+
+async function getFood(req,res) {
+    const foodItems=await foodModel.find({});
+    res.staus(401).json({
+        message:"food items fetched sucessfully",foodItems
+    })
+}
+
+
+module.exports={createFood,getFood};
