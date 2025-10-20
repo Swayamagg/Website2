@@ -1,8 +1,35 @@
 import React from 'react';
 import "../../styles/auth-shared.css"
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
  const FoodPartnerRegister=()=>{
+  const navigate=useNavigate();
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    const businessName=e.target.businessName.value;
+    const contactName=e.target.contactName.value;
+    const phone=e.target.phone.value;
+    const address=e.target.address.value;
+    const email=e.target.email.value;
+    const password=e.target.password.value;
+    await axios.post("http://localhost:3000/api/auth/food-partner/register",{
+      name:businessName,
+      contactName,
+      phone,
+      address,
+      email,
+      password
+    },{withCredentials:true})
+    .then((res)=>{
+       console.log(res.data);
+       navigate("/create-food");
+    })
+    .catch((err)=>{
+       console.error("There was an error registering!", error);
+    })
+  }
     return(
     <>
     <div className="auth-page-wrapper">
@@ -14,7 +41,7 @@ import { Link } from 'react-router-dom';
         <nav className="auth-alt-action" style={{marginTop: '-4px'}}>
           <strong style={{fontWeight:600}}>Switch:</strong> <Link to="/user/register">User</Link> • <Link to="/food-partner/register">Food partner</Link>
         </nav>
-        <form className="auth-form" noValidate>
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
             <label htmlFor="businessName">Business Name</label>
             <input id="businessName" name="businessName" placeholder="Tasty Bites" autoComplete="organization" />

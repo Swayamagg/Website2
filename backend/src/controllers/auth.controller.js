@@ -77,7 +77,7 @@ async function loginUser(req,res) {
 
 
 async function  partnerRegister(req,res) {
-    const {name,email,password}=req.body;
+    const {name,email,password,contactName,phone}=req.body;
     const userExist=await partnerModel.findOne({email});
 
     if(userExist){
@@ -89,7 +89,9 @@ async function  partnerRegister(req,res) {
     const newPartner=await partnerModel.create({
         name,
         email,
-        password:hashedPassword
+        password:hashedPassword,
+        contactName,
+        phone
     });
 
     const token=jwt.sign({
@@ -103,6 +105,8 @@ async function  partnerRegister(req,res) {
             id:newPartner._id,
             name:newPartner.name,
             email:newPartner.email,
+            contactName:newPartner.contactName,
+            phone:newPartner.phone,
         }
     })
     

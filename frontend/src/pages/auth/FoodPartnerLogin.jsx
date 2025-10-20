@@ -1,7 +1,20 @@
 import React from 'react';
-
 import '../../styles/auth-shared.css'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
  const FoodPartnerLogin=()=>{
+  const navigate=useNavigate();
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    const email=e.target.email.value;
+    const password=e.target.password.value;
+    await axios.post("http://localhost:3000/api/auth/food-partner/register",{
+      email,
+      password
+    },{withCredentials:true})
+      navigate("/create-food");
+  }
     return(
     <>
       <div className="auth-page-wrapper">
@@ -10,7 +23,7 @@ import '../../styles/auth-shared.css'
           <h1 id="partner-login-title" className="auth-title">Partner login</h1>
           <p className="auth-subtitle">Access your dashboard and manage orders.</p>
         </header>
-        <form className="auth-form" noValidate>
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
           <div className="field-group">
             <label htmlFor="email">Email</label>
             <input id="email" name="email" type="email" placeholder="business@example.com" autoComplete="email" />
