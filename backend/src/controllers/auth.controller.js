@@ -21,6 +21,7 @@ async function registerUser(req,res) {
         email,
         password:hashedPassword
     });
+    
     const token=jwt.sign({
         user:user._id,
     },process.env.JWT_SEC)
@@ -77,7 +78,7 @@ async function loginUser(req,res) {
 
 
 async function  partnerRegister(req,res) {
-    const {name,email,password,contactName,phone}=req.body;
+    const {name,email,password,contactName,phone,address}=req.body;
     const userExist=await partnerModel.findOne({email});
 
     if(userExist){
@@ -91,7 +92,8 @@ async function  partnerRegister(req,res) {
         email,
         password:hashedPassword,
         contactName,
-        phone
+        phone,
+        address
     });
 
     const token=jwt.sign({
@@ -107,6 +109,7 @@ async function  partnerRegister(req,res) {
             email:newPartner.email,
             contactName:newPartner.contactName,
             phone:newPartner.phone,
+            address:newPartner.address,
         }
     })
     

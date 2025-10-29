@@ -14,6 +14,7 @@ import axios from 'axios';
     const address=e.target.address.value;
     const email=e.target.email.value;
     const password=e.target.password.value;
+    
     await axios.post("http://localhost:3000/api/auth/food-partner/register",{
       name:businessName,
       contactName,
@@ -27,7 +28,7 @@ import axios from 'axios';
        navigate("/create-food");
     })
     .catch((err)=>{
-       console.error("There was an error registering!", error);
+       console.error("There was an error registering!", err);
     })
   }
     return(

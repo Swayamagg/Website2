@@ -14,7 +14,7 @@ const foodSchema=new mongoose.Schema({
         type:String,    
     },
     foodPartner:{
-        type:mongoose.Schema.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"foodpartner",
     }
 })

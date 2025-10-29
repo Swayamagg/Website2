@@ -10,6 +10,7 @@ async function uploadFile(file,filename) {
          file:file,
          fileName:filename,
     })
+    return result;
 }
 
 module.exports={uploadFile};
