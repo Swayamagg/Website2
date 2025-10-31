@@ -6,8 +6,7 @@ import axios from 'axios';
 const Home=()=>{
     const[videos,setVideos]=useState([]);
     useEffect(()=>{
-      const token=localStorage.getItem('token');
-     axios.get("http://localhost:3000/api/food",{withCredentials:true},{headers:{'Authorization':`Bearer ${token}`}})
+     axios.get("http://localhost:3000/api/food",{withCredentials:true})
      .then((res)=>{
         console.log(res.data);
         setVideos(res.data.foodItems);

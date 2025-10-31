@@ -133,7 +133,7 @@ async function partnerLogin(req,res) {
         id:partner._id
     },process.env.JWT_SEC);
     res.cookie("token",token);
-    res.status(201).json({
+    res.status(200).json({
         message:"Partner logged successfully",
         partner:{
             id:partner._id,

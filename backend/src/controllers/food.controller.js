@@ -19,7 +19,7 @@ async function createFood(req,res) {
 
 async function getFood(req,res) {
     const foodItems=await foodModel.find({});
-    res.status(401).json({
+    res.status(200).json({
         message:"food items fetched sucessfully",foodItems
     })
 }
